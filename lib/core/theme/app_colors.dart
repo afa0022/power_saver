@@ -7,7 +7,7 @@ abstract final class AppColors {
   static const fieldBorder = Color(0xFF16485A);
   static const teal = Color(0xFF1FD8B8);
   static const tealDark = Color(0xFF0FA394);
-  static const gold = Color(0xFFE8B730);
+  static const gold = Color(0xFFE7BB3F);
   static const goldDark = Color(0xFFC8921A);
   static const textHint = Color(0xFF8FA3A8);
   static const error = Color(0xFFFF6B6B);

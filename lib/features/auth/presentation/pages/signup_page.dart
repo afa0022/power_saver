@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../app/routes.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/validators/app_validators.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/auth_scaffold.dart';
 import '../widgets/password_field.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_tab_switcher.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -18,83 +21,173 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _phone = TextEditingController();
-  final _username = TextEditingController();
-  final _password = TextEditingController();
-  bool _obscure = true;
-  bool _terms = false;
+  final phone = TextEditingController();
+  final username = TextEditingController();
+  final password = TextEditingController();
+  final confirmPassword = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  bool obscure = true;
+  bool obscureConfirm = true;
+  bool terms = false;
 
   @override
   void dispose() {
-    _phone.dispose();
-    _username.dispose();
-    _password.dispose();
+    phone.dispose();
+    username.dispose();
+    password.dispose();
+    confirmPassword.dispose();
     super.dispose();
   }
 
+  // void submit() {
+  //   FocusScope.of(context).unfocus();
+  //
+  //   if (context.read().state.isLoading) {
+  //     return;
+  //   }
+  //
+  //   final isValid = formKey.currentState?.validate() ?? false;
+  //   if (!isValid) return;
+  //
+  //   if (!_terms) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(backgroundColor: AppColors.gold,
+  //         content: Text(
+  //           'يجب الموافقة على شروط الاستخدام وسياسة الخصوصية',
+  //         style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
+  //       ),
+  //     );
+  //     return;
+  //   }
+  //
+  //   context.read<SignUpCubit>().register(
+  //     username: username.text.trim(),
+  //     phoneNumber: phone.text.trim(),
+  //     password: password.text,
+  //     confirmPassword: confirmPassword.text,
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return AuthScaffold(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const AuthHeader(
-            title: 'أهلاً بيك',
-            subtitle: 'سجّل عشان تتابع استهلاك الكهربا',
+        return AuthScaffold(
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const AuthHeader(
+                  title: 'أهلاً بيك',
+                  subtitle: 'سجّل عشان تتابع استهلاك الكهربا',
+                ),
+                const SizedBox(height: 16),
+
+                AuthTabSwitcher(
+                  selected: AuthTab.signUp,
+                  onSelected: (_) {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      AppRoutes.login,
+                    );
+                  },
+                ),
+                const SizedBox(height: 14),
+
+                PhoneRow(
+                  controller: phone,
+                  validator: AppValidators.egyptianPhone,
+                ),
+                const SizedBox(height: 4),
+
+                const Text(
+                  'هيبعتلك كود تأكيد عليه',
+                  style: TextStyle(
+                    color: AppColors.textHint,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                AppTextField(
+                  label: 'اسم المستخدم',
+                  hint: '@mohamedmoma02',
+                  controller: username,
+                  validator: AppValidators.username,
+                  textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 10),
+
+                PasswordField(
+                  controller: password,
+                  obscure: obscure,
+                  onToggle: () {
+                    setState(() => obscure = !obscure);
+                  },
+                  validator: AppValidators.password,
+                  textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 10),
+
+                PasswordField(
+                  label: 'تأكيد كلمة المرور',
+                  hint: 'أعد كتابة كلمة المرور',
+                  controller: confirmPassword,
+                  obscure: obscureConfirm,
+                  onToggle: () {
+                    setState(() {
+                      obscureConfirm = !obscureConfirm;
+                    });
+                  },
+                  validator: (value) =>
+                      AppValidators.confirmPassword(
+                        value,
+                        password.text,
+                      ),
+                  textInputAction: TextInputAction.done,
+                ),
+                const SizedBox(height: 10),
+
+                TermsRow(
+                  value: terms,
+                  onChanged: (value) {
+                    setState(() => terms = value);
+                  },
+                ),
+                const SizedBox(height: 14),
+
+                PrimaryButton(
+                  label: 'إرسال كود التحقق',
+                  onPressed: () => Navigator.pushNamed(context, AppRoutes.otp),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 16),
-          AuthTabSwitcher(
-            selected: AuthTab.signUp,
-            onSelected: (_) =>
-                Navigator.pushReplacementNamed(context, AppRoutes.login),
-          ),
-          const SizedBox(height: 14),
-          _PhoneRow(controller: _phone),
-          const SizedBox(height: 4),
-          const Text(
-            'هيبعتلك كود تأكيد عليه',
-            style: TextStyle(color: AppColors.textHint, fontSize: 12),
-          ),
-          const SizedBox(height: 12),
-          AppTextField(
-            label: 'اسم المستخدم',
-            hint: '@mohamedmoma02',
-            controller: _username,
-            textInputAction: TextInputAction.next,
-          ),
-          const SizedBox(height: 12),
-          PasswordField(
-            controller: _password,
-            obscure: _obscure,
-            onToggle: () => setState(() => _obscure = !_obscure),
-          ),
-          const SizedBox(height: 10),
-          _TermsRow(
-            value: _terms,
-            onChanged: (v) => setState(() => _terms = v),
-          ),
-          const SizedBox(height: 14),
-          PrimaryButton(
-            label: 'إرسال كود التحقق',
-            onPressed: () => Navigator.pushNamed(context, AppRoutes.otp),
-          ),
-        ],
-      ),
-    );
+        );
   }
 }
 
-class _PhoneRow extends StatelessWidget {
-  const _PhoneRow({required this.controller});
+class PhoneRow extends StatelessWidget {
+  const PhoneRow({
+    required this.controller,
+    required this.validator,
+  });
+
   final TextEditingController controller;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Text(
           'رقم الموبايل',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const SizedBox(height: 8),
         Row(
@@ -103,6 +196,7 @@ class _PhoneRow extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 controller: controller,
+                validator: validator,
                 keyboardType: TextInputType.phone,
                 textDirection: TextDirection.ltr,
                 inputFormatters: [
@@ -111,17 +205,24 @@ class _PhoneRow extends StatelessWidget {
                 ],
                 decoration: InputDecoration(
                   hintText: '10X XXX XXXX',
-                  hintStyle: const TextStyle(color: AppColors.textHint),
+                  hintStyle: const TextStyle(
+                    color: AppColors.textHint,
+                  ),
                   filled: true,
                   fillColor: AppColors.field,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 20,
                   ),
-                  enabledBorder: _border(AppColors.teal.withOpacity(0.6)),
-                  focusedBorder: _border(AppColors.teal),
-                  errorBorder: _border(AppColors.error),
-                  focusedErrorBorder: _border(AppColors.error),
+                  border: border(
+                    AppColors.fieldBorder.withOpacity(0.6),
+                  ),
+                  enabledBorder: border(
+                    AppColors.fieldBorder.withOpacity(0.6),
+                  ),
+                  focusedBorder: border(AppColors.teal),
+                  errorBorder: border(AppColors.error),
+                  focusedErrorBorder: border(AppColors.error),
                 ),
               ),
             ),
@@ -132,18 +233,29 @@ class _PhoneRow extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.field,
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.teal.withOpacity(0.6)),
+                border: Border.all(
+                  color: AppColors.teal.withOpacity(0.6),
+                ),
               ),
               alignment: Alignment.center,
               child: const Directionality(
                 textDirection: TextDirection.ltr,
                 child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       'EG ',
-                      style: TextStyle(fontSize: 11, color: AppColors.textHint),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textHint,
+                      ),
                     ),
-                    Text('+20', style: TextStyle(fontWeight: FontWeight.w700)),
+                    Text(
+                      '+20',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -154,14 +266,20 @@ class _PhoneRow extends StatelessWidget {
     );
   }
 
-  OutlineInputBorder _border(Color c) => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(18),
-    borderSide: BorderSide(color: c, width: 1.2),
-  );
+  OutlineInputBorder border(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(18),
+      borderSide: BorderSide(color: color, width: 1.2),
+    );
+  }
 }
 
-class _TermsRow extends StatelessWidget {
-  const _TermsRow({required this.value, required this.onChanged});
+class TermsRow extends StatelessWidget {
+  const TermsRow({
+    required this.value,
+    required this.onChanged,
+  });
+
   final bool value;
   final ValueChanged<bool> onChanged;
 
@@ -175,7 +293,7 @@ class _TermsRow extends StatelessWidget {
           child: Checkbox(
             value: value,
             activeColor: AppColors.teal,
-            onChanged: (v) => onChanged(v ?? false),
+            onChanged: (value) => onChanged(value ?? false),
           ),
         ),
         const SizedBox(width: 8),
@@ -186,11 +304,11 @@ class _TermsRow extends StatelessWidget {
               children: [
                 TextSpan(
                   text: 'بتسجيل الدخول فإنك توافق على ',
-                  style: TextStyle(color: AppColors.textHint),
+                  style: TextStyle(color: AppColors.textHint,fontWeight: FontWeight.bold),
                 ),
                 TextSpan(
-                  text: 'شروط الاستخدام و سياسة الخصوصية',
-                  style: TextStyle(color: AppColors.gold),
+                  text: 'شروط الاستخدام وسياسة الخصوصية',
+                  style: TextStyle(color: AppColors.gold,fontWeight: FontWeight.bold),
                 ),
               ],
             ),

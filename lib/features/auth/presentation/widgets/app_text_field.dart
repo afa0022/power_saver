@@ -15,12 +15,14 @@ class AppTextField extends StatelessWidget {
     this.inputFormatters,
     this.textDirection = TextDirection.ltr,
     this.textInputAction,
+    this.autovalidateMode,
   });
 
   final String label;
   final String hint;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final AutovalidateMode? autovalidateMode;
   final TextInputType? keyboardType;
   final bool obscureText;
   final Widget? suffix;
@@ -38,6 +40,7 @@ class AppTextField extends StatelessWidget {
         TextFormField(
           controller: controller,
           validator: validator,
+          autovalidateMode: autovalidateMode,
           obscureText: obscureText,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
@@ -57,7 +60,8 @@ class AppTextField extends StatelessWidget {
             focusedBorder: _border(AppColors.teal),
             errorBorder: _border(AppColors.error),
             focusedErrorBorder: _border(AppColors.error),
-            errorStyle: const TextStyle(color: AppColors.error),
+            errorStyle: const TextStyle(color: AppColors.error,fontSize: 14,
+              height: 1.4,fontWeight: FontWeight.bold),
           ),
         ),
       ],

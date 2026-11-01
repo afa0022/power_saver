@@ -17,7 +17,7 @@ class AuthScaffold extends StatelessWidget {
             image: AssetImage(
               'assets/images/f6923f44afe94daecc0c3738c559bc98c6522974 (1).jpg',
             ),
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.fill,
           ),
 
           SafeArea(
@@ -32,7 +32,7 @@ class AuthScaffold extends StatelessWidget {
                     minHeight: constraints.maxHeight - 32,
                   ),
                   child: Align(
-                    alignment: Alignment.bottomCenter,
+                    alignment: Alignment.center,
                     child: GlassCard(child: child),
                   ),
                 ),
