@@ -9,9 +9,6 @@ import '../widgets/primary_button.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_tab_switcher.dart';
 
-
-
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -50,83 +47,80 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-        return AuthScaffold(
-          child: Form(
-            key: formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const AuthHeader(
-                  title: 'أهلاً بيك تاني',
-                  subtitle: 'ادخل باسم المستخدم وكلمة المرور',
-                ),
-                const SizedBox(height: 20),
-                AuthTabSwitcher(
-                  selected: AuthTab.login,
-                  onSelected: (_) => goSignUp(),
-                ),
-                const SizedBox(height: 16),
-                AppTextField(
-                  label: 'اسم المستخدم أو رقم الموبايل',
-                  hint: 'اسم المستخدم أو رقم الموبايل',
-                  controller: username,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'اكتب اسم المستخدم أو رقم الموبايل';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 14),
-                PasswordField(
-                  controller: password,
-                  obscure: obscure,
-                  onToggle: () {
-                    setState(() => obscure = !obscure);
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'اكتب كلمة المرور';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 14),
-                GestureDetector(
-                  onTap: goSignUp,
-                  child: const Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'مستخدم جديد؟ ',
-                          style: TextStyle(
-                            color: AppColors.textHint,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'أنشئ حساب',
-                          style: TextStyle(
-                            color: AppColors.teal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                PrimaryButton(
-                  label: 'دخول',
-                  onPressed: (){}
-                ),
-              ],
+    return AuthScaffold(
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const AuthHeader(
+              title: 'أهلاً بيك تاني',
+              subtitle: 'ادخل باسم المستخدم وكلمة المرور',
             ),
-          ),
-        );
-
-
+            const SizedBox(height: 20),
+            AuthTabSwitcher(
+              selected: AuthTab.login,
+              onSelected: (_) => goSignUp(),
+            ),
+            const SizedBox(height: 16),
+            AppTextField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              label: 'اسم المستخدم ',
+              hint: '@mohamedmoma02',
+              controller: username,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'اكتب اسم المستخدم ';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 14),
+            PasswordField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              controller: password,
+              obscure: obscure,
+              onToggle: () {
+                setState(() => obscure = !obscure);
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'اكتب كلمة المرور';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 14),
+            GestureDetector(
+              onTap: goSignUp,
+              child: const Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'مستخدم جديد؟ ',
+                      style: TextStyle(color: AppColors.textHint),
+                    ),
+                    TextSpan(
+                      text: 'أنشئ حساب',
+                      style: TextStyle(color: AppColors.teal),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            PrimaryButton(
+              label: 'دخول',
+              onPressed: () {
+                final isValid = formKey.currentState!.validate();
+                if (!isValid) return;
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

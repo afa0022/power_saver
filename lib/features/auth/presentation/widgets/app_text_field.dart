@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../../core/theme/app_colors.dart';
 
 class AppTextField extends StatelessWidget {
@@ -15,14 +16,14 @@ class AppTextField extends StatelessWidget {
     this.inputFormatters,
     this.textDirection = TextDirection.ltr,
     this.textInputAction,
-    this.autovalidateMode,
+    this.autovalidateMode = AutovalidateMode.disabled,
   });
 
   final String label;
   final String hint;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-  final AutovalidateMode? autovalidateMode;
+  final AutovalidateMode autovalidateMode;
   final TextInputType? keyboardType;
   final bool obscureText;
   final Widget? suffix;
@@ -34,8 +35,10 @@ class AppTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+        ),
         const SizedBox(height: 8),
         TextFormField(
           controller: controller,
@@ -53,23 +56,31 @@ class AppTextField extends StatelessWidget {
             filled: true,
             fillColor: AppColors.field,
             suffixIcon: suffix,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 20,
+            ),
             border: _border(AppColors.fieldBorder.withOpacity(0.6)),
             enabledBorder: _border(AppColors.fieldBorder.withOpacity(0.6)),
             focusedBorder: _border(AppColors.teal),
             errorBorder: _border(AppColors.error),
             focusedErrorBorder: _border(AppColors.error),
-            errorStyle: const TextStyle(color: AppColors.error,fontSize: 14,
-              height: 1.4,fontWeight: FontWeight.bold),
+            errorStyle: const TextStyle(
+              color: AppColors.error,
+              fontSize: 14,
+              height: 1.4,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
     );
   }
 
-  OutlineInputBorder _border(Color c) => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(color: c, width: 1.2),
-      );
+  OutlineInputBorder _border(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(18),
+      borderSide: BorderSide(color: color, width: 1.2),
+    );
+  }
 }

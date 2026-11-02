@@ -1,11 +1,7 @@
-
 class AppValidators {
   AppValidators._();
 
-  static String? requiredField(
-      String? value, {
-        required String fieldName,
-      }) {
+  static String? requiredField(String? value, {required String fieldName}) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName مطلوب';
     }
@@ -73,10 +69,7 @@ class AppValidators {
     return null;
   }
 
-  static String? confirmPassword(
-      String? value,
-      String originalPassword,
-      ) {
+  static String? confirmPassword(String? value, String originalPassword) {
     if (value == null || value.isEmpty) {
       return 'أكد كلمة المرور';
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -23,8 +24,9 @@ class PrimaryButton extends StatelessWidget {
       height: 56,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient:
-            const LinearGradient(colors: [AppColors.teal, AppColors.tealDark]),
+        gradient: const LinearGradient(
+          colors: [AppColors.teal, AppColors.tealDark],
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.teal.withOpacity(0.35),
@@ -44,16 +46,19 @@ class PrimaryButton extends StatelessWidget {
                     width: 24,
                     height: 24,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2.5, color: Colors.white),
+                      strokeWidth: 2.5,
+                      color: Colors.white,
+                    ),
                   )
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Text(
                       label,
                       style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
           ),

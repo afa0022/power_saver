@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
 
 class AuthHeader extends StatelessWidget {
@@ -16,16 +17,23 @@ class AuthHeader extends StatelessWidget {
             const _BoltLogo(),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(title,
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.w800, height: 1.2)),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                  height: 1.2,
+                ),
+              ),
             ),
             const Icon(Icons.wb_sunny_outlined, size: 24),
           ],
         ),
         const SizedBox(height: 6),
-        Text(subtitle,
-            style: const TextStyle(color: AppColors.textHint, fontSize: 14)),
+        Text(
+          subtitle,
+          style: const TextStyle(color: AppColors.textHint, fontSize: 14),
+        ),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract final class AppColors {
+  static const white = Color(0xFFFFFFFF);
   static const background = Color(0xFF1D2128);
   static const card = Color(0xFF1B3A44);
   static const field = Color(0xFF0E2F3F);
@@ -11,4 +12,6 @@ abstract final class AppColors {
   static const goldDark = Color(0xFFC8921A);
   static const textHint = Color(0xFF8FA3A8);
   static const error = Color(0xFFFF6B6B);
+  static const nearBlack = Color(0x66001F20);
+  static const deepTeal = Color(0xFF062D30);
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import 'app_text_field.dart';
-
-/// بتعتمد على AppTextField (composition) بدل ما تكرر الكود.
-
 
 class PasswordField extends StatelessWidget {
   const PasswordField({
@@ -15,8 +13,10 @@ class PasswordField extends StatelessWidget {
     this.label = 'كلمة المرور',
     this.hint = '••••••••',
     this.textInputAction = TextInputAction.done,
+    this.autovalidateMode = AutovalidateMode.disabled,
   });
 
+  final AutovalidateMode autovalidateMode;
   final TextEditingController controller;
   final bool obscure;
   final VoidCallback onToggle;
@@ -34,12 +34,11 @@ class PasswordField extends StatelessWidget {
       validator: validator,
       obscureText: obscure,
       textInputAction: textInputAction,
+      autovalidateMode: autovalidateMode,
       suffix: IconButton(
         onPressed: onToggle,
         icon: Icon(
-          obscure
-              ? Icons.visibility_outlined
-              : Icons.visibility_off_outlined,
+          obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
           color: AppColors.teal,
           size: 28,
         ),
@@ -47,5 +46,3 @@ class PasswordField extends StatelessWidget {
     );
   }
 }
-
-

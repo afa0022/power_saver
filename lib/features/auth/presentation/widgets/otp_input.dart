@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../../core/theme/app_colors.dart';
 
-
 class OtpInput extends StatefulWidget {
-  const OtpInput({
-    super.key,
-    this.length = 6,
-    required this.onChanged,
-  });
+  const OtpInput({super.key, this.length = 6, required this.onChanged});
 
   final int length;
   final ValueChanged<String> onChanged;
@@ -25,15 +21,9 @@ class _OtpInputState extends State<OtpInput> {
   void initState() {
     super.initState();
 
-    _controllers = List.generate(
-      widget.length,
-          (_) => TextEditingController(),
-    );
+    _controllers = List.generate(widget.length, (_) => TextEditingController());
 
-    _nodes = List.generate(
-      widget.length,
-          (_) => FocusNode(),
-    );
+    _nodes = List.generate(widget.length, (_) => FocusNode());
   }
 
   @override
@@ -56,18 +46,13 @@ class _OtpInputState extends State<OtpInput> {
       _nodes[index - 1].requestFocus();
     }
 
-    widget.onChanged(
-      _controllers.map((controller) => controller.text).join(),
-    );
+    widget.onChanged(_controllers.map((controller) => controller.text).join());
   }
 
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-        color: color,
-        width: 1.3,
-      ),
+      borderSide: BorderSide(color: color, width: 1.3),
     );
   }
 
@@ -82,8 +67,7 @@ class _OtpInputState extends State<OtpInput> {
             constraints.maxWidth - (spacing * (widget.length - 1));
 
         // عرض الخانة يتناسب مع الشاشة
-        final boxWidth = (availableWidth / widget.length)
-            .clamp(35.0, 52.0);
+        final boxWidth = (availableWidth / widget.length).clamp(35.0, 52.0);
 
         final boxHeight = (boxWidth * 1.25).clamp(44.0, 64.0);
 
@@ -131,4 +115,3 @@ class _OtpInputState extends State<OtpInput> {
     );
   }
 }
-

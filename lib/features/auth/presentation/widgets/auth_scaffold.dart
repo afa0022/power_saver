@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import 'glass_card.dart';
 
 class AuthScaffold extends StatelessWidget {
