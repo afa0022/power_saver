@@ -50,7 +50,7 @@ class _Tab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+     child: GestureDetector(
         onTap: active ? null : onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -58,7 +58,17 @@ class _Tab extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
-            color: active ? AppColors.teal : Colors.transparent,
+            gradient: active
+                ? const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF1ED3B8),
+                Color(0xFF0DA28D),
+              ],
+            )
+                : null,
+            color: active ? null : Colors.transparent,
           ),
           child: Text(
             label,
